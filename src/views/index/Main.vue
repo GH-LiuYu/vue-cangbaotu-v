@@ -29,6 +29,11 @@
                        短视频
                    </el-card>
                </el-col>
+               <el-col :span="8" class="cardli">
+                   <el-card shadow="always">
+                       网站访问热度排行1234
+                   </el-card>
+               </el-col>
            </div>
 
        </div>
