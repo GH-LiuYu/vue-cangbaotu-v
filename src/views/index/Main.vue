@@ -4,11 +4,31 @@
         <Search></Search>
        <div class="list">
            <div class="card">
-               <el-col :span="8" v-for="index of 12" class="cardli">
-               <el-card shadow="always">
-                   鼠标悬浮时显示
-               </el-card>
-           </el-col>
+                <el-col :span="8" class="cardli">
+                   <el-card shadow="always">
+                       小说
+                   </el-card>
+                </el-col>
+               <el-col :span="8" class="cardli">
+                   <el-card shadow="always">
+                       影视
+                   </el-card>
+               </el-col>
+               <el-col :span="8" class="cardli">
+                   <el-card shadow="always">
+                       书籍
+                   </el-card>
+               </el-col>
+               <el-col :span="8" class="cardli">
+                   <el-card shadow="always">
+                       游戏
+                   </el-card>
+               </el-col>
+               <el-col :span="8" class="cardli">
+                   <el-card shadow="always">
+                       短视频
+                   </el-card>
+               </el-col>
            </div>
 
        </div>
