@@ -13,6 +13,7 @@
     "node-sass": "^4.11.1",
     "sass-loader": "^7.3.0",
     "vue": "^2.6.10",
+    "vue-concise-slider": "^3.4.4",
     "vue-router": "^3.5.1"
   },
   "devDependencies": {
