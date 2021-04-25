@@ -14,9 +14,9 @@
   // import slider components
   import { slider, slideritem } from 'vue-concise-slider'
   export default {
+    props: {num:''},
     data () {
       return {
-        //data list [array]
         someList : [
           {
             html: 'slider',
@@ -27,23 +27,7 @@
             }
           },
           {
-            html: 'slider44',
-            style: {
-              'background': '#4abf8a',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider445454',
-            style: {
-              'background': '#4abf8a',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider4445452222',
+            html: 'slider1',
             style: {
               'background': '#4abf8a',
               'width': '23.5%',
@@ -53,7 +37,7 @@
           {
             html: 'slider2',
             style: {
-              'background': '#4bbfc3',
+              'background': '#4abf8a',
               'width': '23.5%',
               'margin-right': '2%'
             }
@@ -61,7 +45,7 @@
           {
             html: 'slider3',
             style: {
-              'background': '#7baabe',
+              'background': '#4abf8a',
               'width': '23.5%',
               'margin-right': '2%'
             }
@@ -69,7 +53,7 @@
           {
             html: 'slider4',
             style: {
-              'background': '#7caabe',
+              'background': '#4bbfc3',
               'width': '23.5%',
               'margin-right': '2%'
             }
@@ -77,7 +61,7 @@
           {
             html: 'slider5',
             style: {
-              'background': '#4abf8a',
+              'background': '#7baabe',
               'width': '23.5%',
               'margin-right': '2%'
             }
@@ -85,7 +69,7 @@
           {
             html: 'slider6',
             style: {
-              'background': '#4bbfc3',
+              'background': '#7caabe',
               'width': '23.5%',
               'margin-right': '2%'
             }
@@ -93,13 +77,29 @@
           {
             html: 'slider7',
             style: {
-              'background': '#7baabe',
+              'background': '#4abf8a',
               'width': '23.5%',
               'margin-right': '2%'
             }
           },
           {
             html: 'slider8',
+            style: {
+              'background': '#4bbfc3',
+              'width': '23.5%',
+              'margin-right': '2%'
+            }
+          },
+          {
+            html: 'slider9',
+            style: {
+              'background': '#7baabe',
+              'width': '23.5%',
+              'margin-right': '2%'
+            }
+          },
+          {
+            html: 'slider10',
             style: {
               'background': '#7caabe',
               'width': '23.5%',
@@ -111,7 +111,9 @@
           itemAnimation: true,
           centeredSlides: true,
           loopedSlides: 2,
-          slidesToScroll: 1
+          slidesToScroll: 1,
+          pagination:false,
+          currentPage:0,
         }
       }
     },
