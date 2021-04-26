@@ -1,7 +1,12 @@
 <template>
     <div class="content">
         <div class="header">
+            <div class="login">
+                <span>注册</span>
+                <span>登录</span>
+            </div>
             <h1>投票公布时间</h1>
+
             <Clock style="height: 50px;margin-top: 20px" ></Clock>
         </div>
         <div class="main"><Slider :num="num" :some-list="list"></Slider></div>
@@ -12,7 +17,7 @@
                         class="inline-input"
                         v-model="state"
                         :fetch-suggestions="querySearch"
-                        placeholder="查找：00001，gzmt，贵州茅台"
+                        placeholder="投票：00001 gzmt 贵州茅台"
                         :trigger-on-focus="false"
                         @select="handleSelect"
                 ></el-autocomplete>
@@ -97,7 +102,7 @@
                 }
             },
             handleSelect(item) {
-                this.num = item.id
+                this.num = item.id-1
 
             },
 
@@ -140,5 +145,13 @@
         border-left:0px;
         border-right:0px;
         width: 115%;
+    }
+    .login{
+        float:right;
+        padding: 5px;
+        position: relative;
+        span{
+            padding: 5px;
+        }
     }
 </style>
