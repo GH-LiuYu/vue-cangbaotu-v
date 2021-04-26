@@ -1,56 +1,144 @@
-
 <template>
-  <el-container>
-    <el-main ref="homePage">
-        <router-view  :key="key"></router-view>
-    </el-main>
-  </el-container>
+    <div class="content">
+        <div class="header">
+            <h1>投票公布时间</h1>
+            <Clock style="height: 50px;margin-top: 20px" ></Clock>
+        </div>
+        <div class="main"><Slider :num="num" :some-list="list"></Slider></div>
+
+        <div class="footer">
+            <el-col>
+                <el-autocomplete
+                        class="inline-input"
+                        v-model="state"
+                        :fetch-suggestions="querySearch"
+                        placeholder="查找：00001，gzmt，贵州茅台"
+                        :trigger-on-focus="false"
+                        @select="handleSelect"
+                ></el-autocomplete>
+            </el-col>
+        </div>
+    </div>
 </template>
+
 <script>
-  export default {
-    name: "Main",
-    data() {
-      return {
-        clientHeight:'',
-      };
-    },
-    mounted(){
-      // 获取浏览器可视区域高度
-      this.clientHeight =   `${document.documentElement.clientHeight}`
-      window.onresize = function temp() {
-        this.clientHeight = `${document.documentElement.clientHeight}`;
-      };
+    import Slider from "../../components/Slider";
+    import Clock from "../../components/Clock";
+    import {getlist} from '@/api/codelist';
+    export default {
+        name: 'test',
+        components: {Slider,Clock},
+        data() {
+            return {
+                data:[],
+                state:'',
+                list:[],
+                list1:[],
+                list2:[],
+                list3:[],
+                num:'',
+                str:'',
+            };
+        },
+        created() {
+        },
+        mounted() {
+           this.getlist();
+        },
+        methods: {
+            getlist:function () {
+                getlist().then(response => {
+                    this.list = response.data;
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
+            querySearch(queryString, cb) {
+                var list = this.list;
+                var results = queryString ? list.filter(this.createFilter(queryString,this.isstring(queryString))) : list;
+                // 调用 callback 返回建议列表的数据
+                cb(results);
+            },
+            createFilter(queryString,str) {
+                if(str==='中文'){
+                  return (restaurant) => {
+                      restaurant.value = restaurant.name;
+                    return (restaurant.value.indexOf(queryString) === 0);
+                  };
+                }
+                if(str==='英文'){
+                  return (restaurant) => {
+                     restaurant.value = restaurant.short;
+                     if(restaurant.value!==null){
+                         return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                     }
 
-    },
-    computed: {
-      key() {
-        return this.$route.fullPath;
-      },
-    },
-    watch: {
-      // 如果 `clientHeight` 发生改变，这个函数就会运行
-      clientHeight: function () {
-        this.changeFixed(this.clientHeight)
-      }
-    },
-    methods: {
-      changeFixed(clientHeight){ //动态修改样式
-        this.$refs.homePage.$el.style.height = clientHeight+'px';
-      },
-    },
-  };
+                  };
+                }
+                if(str==='数字'){
+                  return (restaurant) => {
+                    restaurant.value = restaurant.code;
+                    return (restaurant.value.indexOf(queryString) === 0);
+                  };
+                }
+            },
+            isstring (queryString) {
+                var pattern = new RegExp("[\u4E00-\u9FA5]+");//中文
+                var pattern2 = new RegExp("[A-Za-z]+");//英文
+                var pattern3 = new RegExp("[0-9]+");//字符串
+                if(pattern.test(queryString)){
+                    return '中文'
+                }else if(pattern2.test(queryString)){
+                    return '英文'
+                }else if(pattern3.test(queryString)){
+                    return '数字'
+                }else{
+                    return '中文'
+                }
+            },
+            handleSelect(item) {
+                this.num = item.id
+
+            },
+
+
+        }
+    }
 </script>
-
 <style lang="scss" scoped>
-
-  .el-main {
-    background-color: #5583a0;
-    color: #333;
-    text-align: center;
-  }
-
-  body > .el-container {
-    margin-bottom: 40px;
-  }
+    .content{
+        display: flex;
+        flex-direction: column;
+        justify-content:center;
+        align-items:center;
+    }
+    .header{
+        min-height: 200px;
+        width: 100%;
+        text-align: center;
+    }
+    .main{
+        min-height: 500px;
+        width: 100%;
+        background-color: black;
+        margin-top: 5px;
+        background: -webkit-radial-gradient(bottom ellipse, #28859e  0%, #000000 50%);
+        background: radial-gradient(ellipse at bottom, #28859e  0%, #000000 50%);
+    }
+    .footer{
+        min-height: 200px;
+        text-align: center;
+        margin: auto;
+    }
+    .inline-input>>>.el-input__inner{
+        font-size: 24px!important;
+        color:#000000!important;
+        height: 80px;
+        padding: 20px;
+        border-bottom: 1px solid #dbdbdb;
+        border-top:0px;
+        border-left:0px;
+        border-right:0px;
+        width: 115%;
+    }
 </style>
-

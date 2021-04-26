@@ -4,10 +4,14 @@
     <!-- Using the slider component -->
     <slider ref="slider" :options="options" @slide='slide' @tap='onTap' @init='onInit'>
       <!-- slideritem wrapped package with the components you need -->
-      <slideritem v-for="(item,index) in someList" :key="index" :style="item.style">
+      <slideritem v-for="(item,index) in someList" :key="index" :style="style">
         <div>
-          <div>{{item.html}}</div>
-          <div>{{item.code}}</div>
+          <div >
+            <div style="background-color: black;border-radius:25px;cursor:pointer">投票</div>
+            <div>{{item.name}}</div>
+            <div>{{item.code}}</div>
+          </div>
+
         </div>
       </slideritem>
       <!-- Customizable loading -->
@@ -19,203 +23,25 @@
   // import slider components
   import { slider, slideritem } from 'vue-concise-slider'
   export default {
-    props: ['num'],
+    props: ['num','someList'],
     data () {
       return {
-        someList : [
-          {
-            html: 'guizhoumaotai',
-            code: '0001',
-            style: {
-              'background': '#4abf8a',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider1',
-            style: {
-              'background': '#4abf8a',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider2',
-            style: {
-              'background': '#4abf8a',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider3',
-            style: {
-              'background': '#4abf8a',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider4',
-            style: {
-              'background': '#4bbfc3',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider5',
-            style: {
-              'background': '#7baabe',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider6',
-            style: {
-              'background': '#7caabe',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider7',
-            style: {
-              'background': '#4abf8a',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider8',
-            style: {
-              'background': '#4bbfc3',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider9',
-            style: {
-              'background': '#7baabe',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider10',
-            style: {
-              'background': '#7caabe',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider11',
-            style: {
-              'background': '#7caabe',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider12',
-            style: {
-              'background': '#7caabe',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider13',
-            style: {
-              'background': '#7caabe',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider14',
-            style: {
-              'background': '#7caabe',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider15',
-            style: {
-              'background': '#7caabe',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider16',
-            style: {
-              'background': '#7caabe',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider17',
-            style: {
-              'background': '#7caabe',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider18',
-            style: {
-              'background': '#7caabe',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider18',
-            style: {
-              'background': '#7caabe',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider19',
-            style: {
-              'background': '#7caabe',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider20',
-            style: {
-              'background': '#7caabe',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          },
-          {
-            html: 'slider21',
-            style: {
-              'background': '#7caabe',
-              'width': '23.5%',
-              'margin-right': '2%'
-            }
-          }
-        ],
+        style: {
+          // 'background': '#7caabe',
+          'background': '#c586fb',
+          // 'width': '23.5%',
+          'width': '18.5%',
+          'margin-right': '2%',
+          'border-radius':'20px',
+          'box-shadow':'rgb(0 0 0) 5px 0px 5px',
+        },
         options: {
           itemAnimation: true,
           centeredSlides: true,
           loopedSlides: 2,
           slidesToScroll: 1,
           pagination:false,
-          currentPage:0,
+          currentPage:3,
         }
       }
     },
