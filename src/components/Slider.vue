@@ -5,7 +5,10 @@
     <slider ref="slider" :options="options" @slide='slide' @tap='onTap' @init='onInit'>
       <!-- slideritem wrapped package with the components you need -->
       <slideritem v-for="(item,index) in someList" :key="index" :style="item.style">
-        <div v-html="item.html"></div>
+        <div>
+          <div>{{item.html}}</div>
+          <div>{{item.code}}</div>
+        </div>
       </slideritem>
       <!-- Customizable loading -->
       <div slot="loading">loading...</div>
@@ -21,7 +24,8 @@
       return {
         someList : [
           {
-            html: '<h2>guizhoumaotai</h2><br><h4>0001</h4>',
+            html: 'guizhoumaotai',
+            code: '0001',
             style: {
               'background': '#4abf8a',
               'width': '23.5%',
@@ -102,6 +106,102 @@
           },
           {
             html: 'slider10',
+            style: {
+              'background': '#7caabe',
+              'width': '23.5%',
+              'margin-right': '2%'
+            }
+          },
+          {
+            html: 'slider11',
+            style: {
+              'background': '#7caabe',
+              'width': '23.5%',
+              'margin-right': '2%'
+            }
+          },
+          {
+            html: 'slider12',
+            style: {
+              'background': '#7caabe',
+              'width': '23.5%',
+              'margin-right': '2%'
+            }
+          },
+          {
+            html: 'slider13',
+            style: {
+              'background': '#7caabe',
+              'width': '23.5%',
+              'margin-right': '2%'
+            }
+          },
+          {
+            html: 'slider14',
+            style: {
+              'background': '#7caabe',
+              'width': '23.5%',
+              'margin-right': '2%'
+            }
+          },
+          {
+            html: 'slider15',
+            style: {
+              'background': '#7caabe',
+              'width': '23.5%',
+              'margin-right': '2%'
+            }
+          },
+          {
+            html: 'slider16',
+            style: {
+              'background': '#7caabe',
+              'width': '23.5%',
+              'margin-right': '2%'
+            }
+          },
+          {
+            html: 'slider17',
+            style: {
+              'background': '#7caabe',
+              'width': '23.5%',
+              'margin-right': '2%'
+            }
+          },
+          {
+            html: 'slider18',
+            style: {
+              'background': '#7caabe',
+              'width': '23.5%',
+              'margin-right': '2%'
+            }
+          },
+          {
+            html: 'slider18',
+            style: {
+              'background': '#7caabe',
+              'width': '23.5%',
+              'margin-right': '2%'
+            }
+          },
+          {
+            html: 'slider19',
+            style: {
+              'background': '#7caabe',
+              'width': '23.5%',
+              'margin-right': '2%'
+            }
+          },
+          {
+            html: 'slider20',
+            style: {
+              'background': '#7caabe',
+              'width': '23.5%',
+              'margin-right': '2%'
+            }
+          },
+          {
+            html: 'slider21',
             style: {
               'background': '#7caabe',
               'width': '23.5%',

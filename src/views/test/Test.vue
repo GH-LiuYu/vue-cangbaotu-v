@@ -32,7 +32,8 @@ export default {
       data:[],
       state:'',
       restaurants:[],
-      num:''
+      num:'',
+      str:'',
     };
   },
   created() {
@@ -43,31 +44,72 @@ export default {
   methods: {
     querySearch(queryString, cb) {
       var restaurants = this.restaurants;
-      var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+      ;
+      var results = queryString ? restaurants.filter(this.createFilter(queryString,this.isstring(queryString))) : restaurants;
       // 调用 callback 返回建议列表的数据
       cb(results);
     },
-    createFilter(queryString) {
-      return (restaurant) => {
-        return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-      };
+    createFilter(queryString,str) {
+      if(str==='中文'){
+        return (restaurant) => {
+          return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
+      }
+      if(str==='英文'){
+        return (restaurant) => {
+          return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
+      }
+      if(str==='字符串'){
+        return (restaurant) => {
+          return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
+      }
     },
     loadAll() {
       return [
-        {"id":0, "value": "slider", "address": "长宁区新渔路144号" },
+        {"id":0, "name": "贵州茅台", "code": "001","short":"xzmt" },
         {"id":1,  "value": "slider1", "address": "上海市长宁区淞虹路661号" },
         {"id":2, "value": "slider2", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
         {"id":3, "value": "slider3", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
         {"id":4, "value": "slider4", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+        {"id":5, "value": "slider5", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+        {"id":6, "value": "slider6", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+        {"id":7, "value": "slider7", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+        {"id":8, "value": "slider8", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+        {"id":9, "value": "slider9", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+        {"id":10, "value": "slider10", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+        {"id":12, "value": "slider12", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+        {"id":13, "value": "slider13", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+        {"id":14, "value": "slider14", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+        {"id":15, "value": "slider15", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+        {"id":16, "value": "slider16", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+        {"id":17, "value": "slider17", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+        {"id":18, "value": "slider18", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+        {"id":19, "value": "slider19", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
+        {"id":20, "value": "slider20", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
       ];
     },
-    slideTo () {
-
+    isstring (queryString) {
+        var pattern = new RegExp("[\u4E00-\u9FA5]+");//中文
+        var pattern2 = new RegExp("[A-Za-z]+");//英文
+        var pattern3 = new RegExp("[0-9]+");//字符串
+        if(pattern.test(queryString)){
+          return '中文'
+        }else if(pattern2.test(queryString)){
+          return '英文'
+        }else if(pattern3.test(queryString)){
+          return '字符串'
+        }else{
+          return '中文'
+        }
     },
     handleSelect(item) {
       this.num = item.id
-      this.slideTo()
+
     },
+
+
   }
 }
 </script>
