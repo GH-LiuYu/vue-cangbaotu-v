@@ -4,7 +4,9 @@
     <!-- Using the slider component -->
     <slider ref="slider" :options="options" @slide='slide' @tap='onTap' @init='onInit'>
       <!-- slideritem wrapped package with the components you need -->
-      <slideritem v-for="(item,index) in someList" :key="index" :style="item.style">{{item.html}}</slideritem>
+      <slideritem v-for="(item,index) in someList" :key="index" :style="item.style">
+        <div v-html="item.html"></div>
+      </slideritem>
       <!-- Customizable loading -->
       <div slot="loading">loading...</div>
     </slider>
@@ -14,12 +16,12 @@
   // import slider components
   import { slider, slideritem } from 'vue-concise-slider'
   export default {
-    props: {num:''},
+    props: ['num'],
     data () {
       return {
         someList : [
           {
-            html: 'slider',
+            html: '<h2>guizhoumaotai</h2><br><h4>0001</h4>',
             style: {
               'background': '#4abf8a',
               'width': '23.5%',
@@ -115,6 +117,11 @@
           pagination:false,
           currentPage:0,
         }
+      }
+    },
+    watch:{
+      num:function () {
+        this.$refs.slider.$emit('slideTo', this.num)
       }
     },
     methods:{
