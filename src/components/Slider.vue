@@ -38,7 +38,7 @@
         options: {
           itemAnimation: true,
           centeredSlides: true,
-          loopedSlides: 2,
+          loopedSlides: 6,
           slidesToScroll: 1,
           pagination:false,
           currentPage:3,
@@ -51,23 +51,30 @@
     destroyed() {
       document.removeEventListener('keydown', this.handleKeyDown)
     },
-    watch:{
+    watch:{//监听发生改变
       num:function () {
-        this.$refs.slider.$emit('slideTo', this.num)
+        this.$refs.slider.$emit('slideTo', this.num)//跳转到
       }
     },
     methods:{
       handleKeyDown(e) {
-        if (e.keyCode === 37) {//后退
+        //37 向后，40 向下，39 向前，38 向上
+        if (e.keyCode === 37||e.keyCode===40) {//后退
           console.log('后退')
           this.$refs.slider.$emit('slidePre')
-        } else if (e.keyCode === 39) {//前进
+        } else if (e.keyCode === 39||e.keyCode===38) {//前进
           console.log('前进')
           this.$refs.slider.$emit('slideNext')
         }
       },
-      slide:function(data) {
-        console.log(data)
+      slide:function(data) {//当前滑到第几页
+        console.log(data.currentPage)
+        if(mod(data.currentPage,5)===0){
+          var listJsonStr = sessionStorage.getItem('list');
+          this.list = JSON.parse(listJsonStr).slice(data.currentPage,data.currentPage+5);
+          this.$emit('childByValue', this.list)
+          console.log(this.list)
+        }
       },
       onTap (data) {
         console.log(data)

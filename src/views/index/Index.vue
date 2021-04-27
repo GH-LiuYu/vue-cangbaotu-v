@@ -2,14 +2,17 @@
     <div class="content">
         <div class="header">
             <div class="login">
-                <span>注册</span>
-                <span>登录</span>
+                <span>注册</span>|<span>登录</span>
             </div>
-            <div style="height: 200px;width: 200px;" :style="{ 'background-image':'url('+ urlIcon +')' }">快捷操作:</div>
-            <h1>投票公布时间</h1>
-            <Clock style="height: 50px;margin-top: 20px;" ></Clock>
+            <div style="margin-top: 28px;"><h1>投票公布时间</h1></div>
+            <Clock></Clock>
+            <div style="float: right;margin-top: -99px;">
+                <img src="../../assets/image/sw.svg" style="width: 139px;">
+            </div>
         </div>
-        <div class="main"><Slider :num="num" :some-list="list"></Slider></div>
+        <div class="main">
+            <Slider :num="num" :some-list="slices" v-on:childByValue="childByValue"></Slider>
+        </div>
 
         <div class="footer">
             <el-col>
@@ -31,19 +34,19 @@
     import Clock from "../../components/Clock";
     import {getlist} from '@/api/codelist';
     export default {
-        name: 'test',
+        name: 'index',
         components: {Slider,Clock},
         data() {
             return {
                 data:[],
                 state:'',
                 list:[],
-                list1:[],
-                list2:[],
-                list3:[],
+                slices:[],
                 num:'',
                 str:'',
-                urlIcon:require('./../../assets/image/sw.png')
+                bgImg: {
+                    backgroundImage: "url(" + require('./../../assets/image/sw.svg') + ")"
+                }
             };
         },
         created() {
@@ -52,12 +55,25 @@
            this.getlist();
         },
         methods: {
+            childByValue: function (childValue) {
+                // childValue就是子组件传过来的值
+                this.slices = childValue
+            },
             getlist:function () {
-                getlist().then(response => {
-                    this.list = response.data;
-                }).catch(error => {
-                    console.log(error)
-                })
+                if (sessionStorage.getItem("list") != null) {//如果已经存在客户端，不需要在请求，这种固定不变的基础数据适合请求一次就行
+                    var listJsonStr = sessionStorage.getItem('list');
+                    this.list  = JSON.parse(listJsonStr);
+                    this.slices =this.list.slice(0,25);
+                }else{
+                    getlist().then(response => {
+                        this.list = response.data;
+                        sessionStorage.setItem('list', JSON.stringify(this.list));
+                        this.slices =this.list.slice(0,25);
+                    }).catch(error => {
+                        console.log(error)
+                    })
+                }
+
             },
             querySearch(queryString, cb) {
                 var list = this.list;
@@ -102,12 +118,10 @@
                     return '中文'
                 }
             },
-            handleSelect(item) {
+            handleSelect(item) {//选择
                 this.num = item.id-1
 
             },
-
-
         }
     }
 </script>
@@ -149,8 +163,11 @@
     }
     .login{
         float:right;
-        padding: 5px;
+        color: #e82363;
+        margin-right: 20px;
+        margin-top: 7px;
         position: relative;
+        font-weight:bold;
         span{
             padding: 5px;
         }
