@@ -5,9 +5,9 @@
                 <span>注册</span>
                 <span>登录</span>
             </div>
+            <div style="height: 200px;width: 200px;" :style="{ 'background-image':'url('+ urlIcon +')' }">快捷操作:</div>
             <h1>投票公布时间</h1>
-
-            <Clock style="height: 50px;margin-top: 20px" ></Clock>
+            <Clock style="height: 50px;margin-top: 20px;" ></Clock>
         </div>
         <div class="main"><Slider :num="num" :some-list="list"></Slider></div>
 
@@ -43,6 +43,7 @@
                 list3:[],
                 num:'',
                 str:'',
+                urlIcon:require('./../../assets/image/sw.png')
             };
         },
         created() {

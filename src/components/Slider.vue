@@ -45,12 +45,27 @@
         }
       }
     },
+    created() {
+      document.addEventListener('keydown', this.handleKeyDown)
+    },
+    destroyed() {
+      document.removeEventListener('keydown', this.handleKeyDown)
+    },
     watch:{
       num:function () {
         this.$refs.slider.$emit('slideTo', this.num)
       }
     },
     methods:{
+      handleKeyDown(e) {
+        if (e.keyCode === 37) {//后退
+          console.log('后退')
+          this.$refs.slider.$emit('slidePre')
+        } else if (e.keyCode === 39) {//前进
+          console.log('前进')
+          this.$refs.slider.$emit('slideNext')
+        }
+      },
       slide:function(data) {
         console.log(data)
       },
