@@ -4,7 +4,7 @@
     <!-- Using the slider component -->
     <slider ref="slider" :options="options" @slide='slide' @tap='onTap' @init='onInit'>
       <!-- slideritem wrapped package with the components you need -->
-      <slideritem v-for="(item,index) in someList" :key="index" :style="style">
+      <slideritem v-for="(item,index) in someList" :key="item.id" :style="style">
         <div>
           <div >
             <div style="background-color: black;border-radius:25px;cursor:pointer">投票</div>
@@ -41,7 +41,7 @@
           loopedSlides: 6,
           slidesToScroll: 1,
           pagination:false,
-          currentPage:3,
+          currentPage:2,
         }
       }
     },
@@ -53,6 +53,12 @@
     },
     watch:{//监听发生改变
       num:function () {
+        if(this.num>this.options.currentPage){
+          var listJsonStr = sessionStorage.getItem('list');
+          this.list = JSON.parse(listJsonStr).slice(0,this.num+2);
+          console.log(this.num)
+          this.$emit('childByValue', this.list)
+        }
         this.$refs.slider.$emit('slideTo', this.num)//跳转到
       }
     },
@@ -68,19 +74,17 @@
         }
       },
       slide:function(data) {//当前滑到第几页
-        console.log(data.currentPage)
-        if(mod(data.currentPage,5)===0){
+        if(data.currentPage>2){
           var listJsonStr = sessionStorage.getItem('list');
-          this.list = JSON.parse(listJsonStr).slice(data.currentPage,data.currentPage+5);
+          this.list = JSON.parse(listJsonStr).slice(0,data.currentPage+3);
           this.$emit('childByValue', this.list)
-          console.log(this.list)
         }
       },
       onTap (data) {
-        console.log(data)
+        // console.log(data)
       },
       onInit (data) {
-        console.log(data)
+        // console.log(data)
       },
     },
     components: {

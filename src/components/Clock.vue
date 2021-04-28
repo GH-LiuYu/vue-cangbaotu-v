@@ -28,7 +28,7 @@
       // 初始化数字
       init() {
         let now = new Date()
-        console.log(now.getTime())
+        // console.log(now.getTime())
         let nowTimeStr = this.formatDate(new Date(now.getTime()), 'hhiiss')
         for (let i = 0; i < this.flipObjs.length; i++) {
           this.flipObjs[i].setFront(nowTimeStr[i])
