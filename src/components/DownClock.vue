@@ -19,28 +19,55 @@
     data() {
       return {
         timer: null,
-        flipObjs: []
+        flipObjs: [],
+        day: 0, hr: 0, min: 0, sec: 0
       }
     },
     components: {
       Flipper
     },
     methods: {
-       addDate:function(day=1) {
+      countdown:function (datestr) {
+        // 目标日期时间戳
+        const end = Date.parse(new Date(datestr))
+        // 当前时间戳
+        const now = Date.parse(new Date())
+        // 相差的毫秒数
+        const msec = end - now
+        // 计算时分秒数
+        let day = parseInt(msec / 1000 / 60 / 60 / 24)
+        let hr = parseInt(msec / 1000 / 60 / 60 % 24)
+        let min = parseInt(msec / 1000 / 60 % 60)
+        let sec = parseInt(msec / 1000 % 60)
+        // 个位数前补零
+        hr = hr > 9 ? hr : '0' + hr
+        min = min > 9 ? min : '0' + min
+        sec = sec > 9 ? sec : '0' + sec
+        // 控制台打印
+        console.log(`${day}天 ${hr}小时 ${min}分钟 ${sec}秒`)
+        // 一秒后递归
+          setTimeout(function () {
+            this.countdown()
+          }, 1000)
+      },
+      addDate:function(day) {
         //加N天
          var dateTime=new Date();
          dateTime=dateTime.setDate(dateTime.getDate()+day);
          return new Date(dateTime);
       },
-      beforeTime:function(){
-        let dateTime = this.addDate(1)//一般交易日往前一天，如果是星期天加两个天或者节假日
-        let dateStr = this.formatDate(dateTime, 'yyyy-mm-dd');
-        return dateStr;
-      },
       // 初始化数字
       init() {
         let now = new Date()
+        let dateTime = this.addDate(3)//一般交易日往前一天，如果是星期天加两个天或者节假日
+        let datestr = this.formatDate(dateTime, 'yyyy-mm-dd hh:ii:ss');
+        console.log(datestr)
         let nowTimeStr = this.formatDate(new Date(now.getTime()), 'hhiiss')
+        let nowTimeStr1 = this.formatDate(new Date(now.getTime()), 'hiiss')
+        if(nowTimeStr<150000&&nowTimeStr1>93000){//在9点30以后和15点以前都不能投，也就是不能出现倒计时
+          //此时为公布时间段
+        }else{//此时为倒计时间段
+        }
         for (let i = 0; i < this.flipObjs.length; i++) {
           this.flipObjs[i].setFront(nowTimeStr[i])
         }
@@ -48,7 +75,9 @@
       // 开始计时
       run() {
         this.timer = setInterval(() => {
-          let now = new Date(this.beforeTime())
+          // 获取当前时间
+          let now = new Date()
+          console.log(now.getTime())
           let nowTimeStr = this.formatDate(new Date(now.getTime() - 1000), 'hhiiss')//返回当前時分秒字符串
           let nextTimeStr = this.formatDate(now, 'hhiiss')
           for (let i = 0; i < this.flipObjs.length; i++) {
