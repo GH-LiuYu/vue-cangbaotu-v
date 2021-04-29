@@ -50,42 +50,50 @@
       },
       // 初始化数字
       init() {
-        const end = Date.parse(new Date('2021-05-01'))-(8*60*60*1000);
+        const end = Date.parse(new Date('2021-04-30'))-(8*60*60*1000)+29*60*1000;
         // 当前时间戳
         const now = Date.parse(new Date())
         const now1 = Date.parse(new Date())
         // 相差的毫秒数
         const msec = end - now
         let nowTimeStr = this.getStr(msec);
+        if(msec<0){
+          nowTimeStr = '00000000';
+        }
         for (let i = 0; i < this.flipObjs.length; i++) {
           this.flipObjs[i].setFront(nowTimeStr[i])
         }
       },
       // 开始计时
       run() {
-        this.timer = setInterval(() => {
-          const end = Date.parse(new Date('2021-05-1'))+1*60*60*1000;
-          // 当前时间戳
-          const now = Date.parse(new Date())-1000
-          const now1 = Date.parse(new Date())
-          // 相差的毫秒数
-          const msec = end - now
-          const msec1 = end - now1
-          let nowTimeStr = this.getStr(msec);
-          let nextTimeStr = this.getStr(msec1);
-          for (let i = 0; i < this.flipObjs.length; i++) {
-            if (nowTimeStr[i] === nextTimeStr[i]) {
-              continue
+        const end1 = Date.parse(new Date('2021-04-30'))-(8*60*60*1000)+29*60*1000;
+        // 当前时间戳
+        const now1 = Date.parse(new Date())
+        if(end1>now1){
+          this.timer = setInterval(() => {
+            const end = Date.parse(new Date('2021-04-30'))-(8*60*60*1000)+29*60*1000;
+            // 当前时间戳
+            const now = Date.parse(new Date())-1000
+            const now1 = Date.parse(new Date())
+            // 相差的毫秒数
+            const msec = end - now
+            const msec1 = end - now1
+            let nowTimeStr = this.getStr(msec);
+            let nextTimeStr = this.getStr(msec1);
+            for (let i = 0; i < this.flipObjs.length; i++) {
+              if (nowTimeStr[i] === nextTimeStr[i]) {
+                continue
+              }
+              this.flipObjs[i].flipDown(
+                      nowTimeStr[i],
+                      nextTimeStr[i]
+              )
             }
-            this.flipObjs[i].flipDown(
-                    nowTimeStr[i],
-                    nextTimeStr[i]
-            )
-          }
-          if(nextTimeStr==='00000000'){
-            clearInterval(this.timer)
-          }
-        }, 1000)
+            if(nextTimeStr==='00000000'){
+              clearInterval(this.timer)
+            }
+          }, 1000)
+        }
       },
       // 正则格式化日期
       formatDate(date, dateFormat) {
