@@ -63,12 +63,12 @@
                 if (sessionStorage.getItem("list") != null) {//如果已经存在客户端，不需要在请求，这种固定不变的基础数据适合请求一次就行
                     var listJsonStr = sessionStorage.getItem('list');
                     this.list  = JSON.parse(listJsonStr);
-                    this.slices =this.list.slice(0,5);
+                    this.slices =this.list.slice(0,100);
                 }else{
                     getlist().then(response => {
                         this.list = response.data;
                         sessionStorage.setItem('list', JSON.stringify(this.list));
-                        this.slices =this.list.slice(0,5);
+                        this.slices =this.list.slice(0,100);
                     }).catch(error => {
                         console.log(error)
                     })

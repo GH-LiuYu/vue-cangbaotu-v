@@ -39,6 +39,7 @@
         this.timer = setInterval(() => {
           // 获取当前时间
           let now = new Date()
+          console.log(now.getTime())
           let nowTimeStr = this.formatDate(new Date(now.getTime() - 1000), 'hhiiss')
           let nextTimeStr = this.formatDate(now, 'hhiiss')
           for (let i = 0; i < this.flipObjs.length; i++) {

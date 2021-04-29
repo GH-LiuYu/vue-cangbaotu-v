@@ -53,12 +53,6 @@
     },
     watch:{//监听发生改变
       num:function () {
-        if(this.num>this.options.currentPage){
-          var listJsonStr = sessionStorage.getItem('list');
-          this.list = JSON.parse(listJsonStr).slice(0,this.num+2);
-          console.log(this.num)
-          this.$emit('childByValue', this.list)
-        }
         this.$refs.slider.$emit('slideTo', this.num)//跳转到
       }
     },
@@ -76,7 +70,7 @@
       slide:function(data) {//当前滑到第几页
         if(data.currentPage>2){
           var listJsonStr = sessionStorage.getItem('list');
-          this.list = JSON.parse(listJsonStr).slice(0,data.currentPage+3);
+          this.list = JSON.parse(listJsonStr).slice(0,data.currentPage+98);
           this.$emit('childByValue', this.list)
         }
       },
