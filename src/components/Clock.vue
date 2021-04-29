@@ -1,5 +1,8 @@
 <template>
   <div class="FlipClock">
+    <Flipper ref="flipperDay1" />
+    <Flipper ref="flipperDay2" />
+    <em>天:</em>
     <Flipper ref="flipperHour1" />
     <Flipper ref="flipperHour2" />
     <em>时:</em>
@@ -26,21 +29,34 @@
       Flipper
     },
     methods: {
-       addDate:function(day=1) {
-        //加N天
-         var dateTime=new Date();
-         dateTime=dateTime.setDate(dateTime.getDate()+day);
-         return new Date(dateTime);
+      getStr:function(msec){
+        let day = parseInt(msec / 1000 / 60 / 60 / 24)
+        let hr = parseInt(msec / 1000 / 60 / 60 % 24)
+        let min = parseInt(msec / 1000 / 60 % 60)
+        let sec = parseInt(msec / 1000 % 60)
+        // 个位数前补零
+        day = day > 9 ? day : '0' + day
+        hr = hr > 9 ? hr : '0' + hr
+        min = min > 9 ? min : '0' + min
+        sec = sec > 9 ? sec : '0' + sec
+        // 控制台打印
+        console.log(`${day}天 ${hr}小时 ${min}分钟 ${sec}秒`)
+        return  day+hr+min+sec;
       },
-      beforeTime:function(){
-        let dateTime = this.addDate(1)//一般交易日往前一天，如果是星期天加两个天或者节假日
-        let dateStr = this.formatDate(dateTime, 'yyyy-mm-dd');
-        return dateStr;
+      addDate:function(day){
+        var dateTime=new Date();
+        dateTime=dateTime.setDate(dateTime.getDate()+day);
+        return this.formatDate(new Date(dateTime), 'yyyy-mm-dd');
       },
       // 初始化数字
       init() {
-        let now = new Date()
-        let nowTimeStr = this.formatDate(new Date(now.getTime()), 'hhiiss')
+        const end = Date.parse(new Date('2021-05-01'))-(8*60*60*1000);
+        // 当前时间戳
+        const now = Date.parse(new Date())
+        const now1 = Date.parse(new Date())
+        // 相差的毫秒数
+        const msec = end - now
+        let nowTimeStr = this.getStr(msec);
         for (let i = 0; i < this.flipObjs.length; i++) {
           this.flipObjs[i].setFront(nowTimeStr[i])
         }
@@ -48,9 +64,15 @@
       // 开始计时
       run() {
         this.timer = setInterval(() => {
-          let now = new Date(this.beforeTime())
-          let nowTimeStr = this.formatDate(new Date(now.getTime() - 1000), 'hhiiss')//返回当前時分秒字符串
-          let nextTimeStr = this.formatDate(now, 'hhiiss')
+          const end = Date.parse(new Date('2021-05-1'))+1*60*60*1000;
+          // 当前时间戳
+          const now = Date.parse(new Date())-1000
+          const now1 = Date.parse(new Date())
+          // 相差的毫秒数
+          const msec = end - now
+          const msec1 = end - now1
+          let nowTimeStr = this.getStr(msec);
+          let nextTimeStr = this.getStr(msec1);
           for (let i = 0; i < this.flipObjs.length; i++) {
             if (nowTimeStr[i] === nextTimeStr[i]) {
               continue
@@ -59,6 +81,9 @@
                     nowTimeStr[i],
                     nextTimeStr[i]
             )
+          }
+          if(nextTimeStr==='00000000'){
+            clearInterval(this.timer)
           }
         }, 1000)
       },
@@ -108,6 +133,8 @@
     mounted() {
       //refs 属性可以看做id 来使用，定位到该dom
       this.flipObjs = [
+        this.$refs.flipperDay1,
+        this.$refs.flipperDay2,
         this.$refs.flipperHour1,
         this.$refs.flipperHour2,
         this.$refs.flipperMinute1,
