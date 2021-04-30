@@ -50,7 +50,7 @@
       },
       // 初始化数字
       init() {
-        const end = Date.parse(new Date('2021-04-30'))-(8*60*60*1000)+29*60*1000;
+        const end = Date.parse(new Date('2021-04-30'))-(8*60*60*1000)+10*60*60*1000+45*60*1000;
         // 当前时间戳
         const now = Date.parse(new Date())
         const now1 = Date.parse(new Date())
@@ -66,12 +66,12 @@
       },
       // 开始计时
       run() {
-        const end1 = Date.parse(new Date('2021-04-30'))-(8*60*60*1000)+29*60*1000;
+        const end1 = Date.parse(new Date('2021-04-30'))-(8*60*60*1000)+10*60*60*1000+45*60*1000;
         // 当前时间戳
         const now1 = Date.parse(new Date())
         if(end1>now1){
           this.timer = setInterval(() => {
-            const end = Date.parse(new Date('2021-04-30'))-(8*60*60*1000)+29*60*1000;
+            const end = Date.parse(new Date('2021-04-30'))-(8*60*60*1000)+10*60*60*1000+45*60*1000;
             // 当前时间戳
             const now = Date.parse(new Date())-1000
             const now1 = Date.parse(new Date())

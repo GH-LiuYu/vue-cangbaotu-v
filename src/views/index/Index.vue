@@ -2,7 +2,7 @@
     <div class="content">
         <div class="header">
             <div class="login">
-                <span>注册</span>|<span>登录</span>
+                <span @click="register">注册</span>|<span @click="login">登录</span>
             </div>
             <div style="margin-top: 28px;"><h1>投票公布时间</h1></div>
             <Clock></Clock>
@@ -55,6 +55,16 @@
            this.getlist();
         },
         methods: {
+            register:function(){
+                this.$router.push({ path: '/register'}).catch(error => {
+                    console.info(error.message)
+                })
+            },
+            login:function(){
+                this.$router.push({ path: '/login', query: { id: ''}}).catch(error => {
+                    console.info(error.message)
+                })
+            },
             childByValue: function (childValue) {
                 // childValue就是子组件传过来的值
                 this.slices = childValue
@@ -169,6 +179,7 @@
         font-weight:bold;
         span{
             padding: 5px;
+            cursor: pointer;
         }
     }
 </style>
