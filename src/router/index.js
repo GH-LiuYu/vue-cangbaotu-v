@@ -21,6 +21,10 @@ const routes = [
     path: '/test',
     component: () => import('@/views/test/Test'),
   },
+  {
+    path: '/register',
+    component: () => import('@/views/user/Register'),
+  },
 
 
 ]

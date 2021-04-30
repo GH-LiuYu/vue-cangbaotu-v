@@ -22,7 +22,9 @@
     data() {
       return {
         timer: null,
-        flipObjs: []
+        flipObjs: [],
+        targetdate:'2021-04-30',
+        targetTime:'10*60*60*1000+45*60*1000',
       }
     },
     components: {
@@ -43,17 +45,11 @@
         console.log(`${day}天 ${hr}小时 ${min}分钟 ${sec}秒`)
         return  day+hr+min+sec;
       },
-      addDate:function(day){
-        var dateTime=new Date();
-        dateTime=dateTime.setDate(dateTime.getDate()+day);
-        return this.formatDate(new Date(dateTime), 'yyyy-mm-dd');
-      },
       // 初始化数字
       init() {
-        const end = Date.parse(new Date('2021-04-30'))-(8*60*60*1000)+29*60*1000;
+        const end = Date.parse(new Date(this.targetdate))-(8*60*60*1000)+this.targetTime;
         // 当前时间戳
         const now = Date.parse(new Date())
-        const now1 = Date.parse(new Date())
         // 相差的毫秒数
         const msec = end - now
         let nowTimeStr = this.getStr(msec);
@@ -66,20 +62,16 @@
       },
       // 开始计时
       run() {
-        const end1 = Date.parse(new Date('2021-04-30'))-(8*60*60*1000)+29*60*1000;
+        const end1 = Date.parse(new Date(this.targetdate))-(8*60*60*1000)+this.targetTime;
         // 当前时间戳
         const now1 = Date.parse(new Date())
         if(end1>now1){
           this.timer = setInterval(() => {
-            const end = Date.parse(new Date('2021-04-30'))-(8*60*60*1000)+29*60*1000;
+            const end = Date.parse(new Date(this.targetdate))-(8*60*60*1000)+this.targetTime;
             // 当前时间戳
-            const now = Date.parse(new Date())-1000
-            const now1 = Date.parse(new Date())
             // 相差的毫秒数
-            const msec = end - now
-            const msec1 = end - now1
-            let nowTimeStr = this.getStr(msec);
-            let nextTimeStr = this.getStr(msec1);
+            let nowTimeStr = this.getStr(end - Date.parse(new Date())-1000);
+            let nextTimeStr = this.getStr(end - Date.parse(new Date()));
             for (let i = 0; i < this.flipObjs.length; i++) {
               if (nowTimeStr[i] === nextTimeStr[i]) {
                 continue
