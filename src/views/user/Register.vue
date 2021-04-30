@@ -25,9 +25,9 @@
 </template>
 
 <script>
-// import {login} from '@/api/user';
+import {register} from '@/api/user';
 export default {
-  name: 'test',
+  name: 'register',
   components: {},
   data() {
     return {
@@ -48,26 +48,25 @@ export default {
     };
   },
   created() {
-   // this.logins();
   },
   methods: {
     onSubmit:function(form){
         this.$refs[form].validate((valid) => {
             if (valid) {
-                alert('submit!');
+                this.register(param);
             } else {
                 console.log('error submit!!');
                 return false;
             }
         });
     },
-    logins:function () {
-      login({test:'测试'}).then(response => {
-        this.data  = response.data;
-        console.log(this.data)
-      }).catch(error => {
-        console.info(error.message)
-      })
+    register:function (param) {
+        register(param).then(response => {
+            this.data  = response.data;
+            console.log(this.data)
+        }).catch(error => {
+            console.info(error.message)
+        })
     }
   }
 }
