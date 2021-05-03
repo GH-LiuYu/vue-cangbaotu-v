@@ -12,16 +12,18 @@
                 <!-- Using the slider component -->
                 <slider ref="slider" :options="options" @slide='slide' @tap='onTap' @init='onInit'>
                     <!-- slideritem wrapped package with the components you need -->
-                    <slideritem v-for="(item,index) in slices" :key="item.id" :style="item.id===isactive?style1:style">
-                        <div>
+                    <template slot-scope="coverflow">
+                        <slideritem v-for="(item,index) in slices" :pageLength="slices.length" :index="index" :key="index" :style="style">
                             <div>
-                                <div style="background-color: black;border-radius:25px;cursor:pointer;">投票<span style="float: right"  @click="click(item.id,selected)"> <vue-clap-button :size="53" colorActive="red"/></span></div>
-                                <div>{{item.name}}</div>
-                                <div>{{item.code}}</div>
-                            </div>
+                                <div>
+                                    <div style="background-color: black;border-radius:25px;cursor:pointer;">投票<span style="float: right"  @click="click(item.id,selected)"> <vue-clap-button :size="53" colorActive="red"/></span></div>
+                                    <div>{{item.name}}</div>
+                                    <div>{{item.code}}</div>
+                                </div>
 
-                        </div>
-                    </slideritem>
+                            </div>
+                        </slideritem>
+                    </template>
                     <!-- Customizable loading -->
                     <div slot="loading">loading...</div>
                 </slider>
@@ -44,6 +46,7 @@
 </template>
 
 <script>
+    // import Slider from "../../components/Slider";
     import Clock from "../../components/Clock";
     import {getlist} from '@/api/codelist';
     import { slider, slideritem } from 'vue-concise-slider'
@@ -65,31 +68,26 @@
                     // 'background': '#7caabe',
                     'background': '#c586fb',
                     // 'width': '23.5%',
-                    'width': '17.8%',
-                    'margin-right': '2%',
-                    'border-radius':'20px',
-                    'box-shadow':'rgb(0 0 0) 5px 0px 5px',
-                },
-                style1: {
-                    'background': '#D41A1A',
-                    // 'background': '#9CB4F7',
-                    // 'width': '23.5%',
-                    'width': '17.8%',
+                    'width': '18.5%',
                     'margin-right': '2%',
                     'border-radius':'20px',
                     'box-shadow':'rgb(0 0 0) 5px 0px 5px',
                 },
                 options: {
-                    itemAnimation: true,
-                    centeredSlides: true,
-                    loopedSlides: 6,
+                    effect: 'coverflow',
+                    currentPage: 20,
+                    thresholdDistance: 100,
+                    thresholdTime: 300,
+                    deviation: 400,
+                    widthScalingRatio: 0.8,
+                    heightScalingRatio: 0.8,
                     slidesToScroll: 1,
-                    pagination:false,
-                    currentPage:2,
+                    loop: true,
+                    pagination: false,
+                    centeredSlides: true,
                 },
                 selected:false,
                 selectedId:0,
-                isactive:'',
             };
         },
         created() {
@@ -114,11 +112,9 @@
                     if(this.selected){//选择
                         console.log('选择')
                         this.selectedId = id;
-                        this.isactive=id;
                     }else{//取消
                         console.log('取消')
                         this.selectedId = 0;
-                        this.isactive=0;
                     }
                 }
             },
@@ -133,8 +129,7 @@
                 }
             },
             slide:function(data) {//当前滑到第几页
-                console.log(data.currentPage)
-                if(data.currentPage>48){
+                if(data.currentPage>2){
                     var listJsonStr = sessionStorage.getItem('list');
                     this.slices = JSON.parse(listJsonStr).slice(0,data.currentPage+4);
                 }
@@ -159,12 +154,13 @@
                 if (sessionStorage.getItem("list") != null) {//如果已经存在客户端，不需要在请求，这种固定不变的基础数据适合请求一次就行
                     var listJsonStr = sessionStorage.getItem('list');
                     this.list  = JSON.parse(listJsonStr);
-                    this.slices =this.list.slice(0,50);
+                    this.slices =this.list.slice(0,6);
+                    console.log(this.slices)
                 }else{
                     getlist().then(response => {
                         this.list = response.data;
                         sessionStorage.setItem('list', JSON.stringify(this.list));
-                        this.slices =this.list.slice(0,50);
+                        this.slices =this.list.slice(0,6);
                     }).catch(error => {
                         console.log(error)
                     })
@@ -217,10 +213,10 @@
             handleSelect(item) {//选择
                 for (let i=0;i<this.slices.length;i++){
                     if(i===2){
+                        console.log(this.slices[i])
                         this.slices[i] = item
                     }
                 }
-                this.isactive = item.id;
                 this.$refs.slider.$emit('slideTo', 2)//跳转到
             },
         }
@@ -274,17 +270,4 @@
             cursor: pointer;
         }
     }
-    /*.slider-item {*/
-    /*    transform:scale(0.8);*/
-    /*    transition-timing-function: ease;*/
-    /*    transition-duration: 300ms;*/
-    /*}*/
-    /*.slider-item.slider-active {*/
-    /*    transform:scale(1.0);*/
-    /*    z-index: 999;*/
-    /*}*/
-    /*.slider-item.slider-active-copy {*/
-    /*    transform:scale(1.0);*/
-    /*    z-index: 999;*/
-    /*}*/
 </style>

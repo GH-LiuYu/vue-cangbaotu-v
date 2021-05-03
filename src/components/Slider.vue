@@ -6,8 +6,8 @@
       <!-- slideritem wrapped package with the components you need -->
       <slideritem v-for="(item,index) in someList" :key="item.id" :style="style">
         <div>
-          <div >
-            <div style="background-color: black;border-radius:25px;cursor:pointer">投票</div>
+          <div>
+            <div style="background-color: black;border-radius:25px;cursor:pointer;">投票<span style="float: right"  @click="click(item.id,selected)"> <vue-clap-button :size="53" :maxClick="1" colorActive="red"/></span></div>
             <div>{{item.name}}</div>
             <div>{{item.code}}</div>
           </div>
@@ -23,7 +23,7 @@
   // import slider components
   import { slider, slideritem } from 'vue-concise-slider'
   export default {
-    props: ['num','someList'],
+    props: ['num','someList','slide'],
     data () {
       return {
         style: {
@@ -42,7 +42,9 @@
           slidesToScroll: 1,
           pagination:false,
           currentPage:2,
-        }
+        },
+        selected:false,
+        selectedId:0,
       }
     },
     created() {
@@ -54,9 +56,27 @@
     watch:{//监听发生改变
       num:function () {
         this.$refs.slider.$emit('slideTo', this.num)//跳转到
-      }
+      },
     },
     methods:{
+      click:function(id,selected){
+        if(this.selectedId!==id&&this.selectedId>0){//非同一个
+          this.$message({
+            showClose: true,
+            message: '每用户只能投一票',
+            type: 'error'
+          });
+        }else {//同一个
+          this.selected = !selected;
+          if(this.selected){//选择
+              console.log('选择')
+            this.selectedId = id;
+          }else{//取消
+            console.log('取消')
+            this.selectedId = 0;
+          }
+        }
+      },
       handleKeyDown(e) {
         //37 向后，40 向下，39 向前，38 向上
         if (e.keyCode === 37||e.keyCode===40) {//后退
@@ -70,20 +90,20 @@
       slide:function(data) {//当前滑到第几页
         if(data.currentPage>2){
           var listJsonStr = sessionStorage.getItem('list');
-          this.list = JSON.parse(listJsonStr).slice(0,data.currentPage+98);
+          this.list = JSON.parse(listJsonStr).slice(0,data.currentPage+4);
           this.$emit('childByValue', this.list)
         }
       },
       onTap (data) {
-        // console.log(data)
+        console.log('点击第几页')
+        console.log(data)
       },
       onInit (data) {
-        // console.log(data)
       },
     },
     components: {
       slider,
-      slideritem
+      slideritem,
     }
   }
 </script>

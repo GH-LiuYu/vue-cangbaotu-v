@@ -3,6 +3,8 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue'
 Vue.use(ElementUI);
+import vueClapButton from 'vue-clap-button'
+Vue.use(vueClapButton);
 import router from './router'//引入路由
 // import ECharts from 'vue-echarts'
 // import 'echarts/lib/chart/line'

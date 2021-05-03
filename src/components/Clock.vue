@@ -1,18 +1,31 @@
 <template>
-  <div class="FlipClock">
-    <Flipper ref="flipperDay1" />
-    <Flipper ref="flipperDay2" />
-    <em>天:</em>
-    <Flipper ref="flipperHour1" />
-    <Flipper ref="flipperHour2" />
-    <em>时:</em>
-    <Flipper ref="flipperMinute1" />
-    <Flipper ref="flipperMinute2" />
-    <em>分:</em>
-    <Flipper ref="flipperSecond1" />
-    <Flipper ref="flipperSecond2" />
-    <em>秒</em>
+  <div>
+    <div class="FlipClock" v-if="!show">
+      <Flipper ref="flipperDay1" />
+      <Flipper ref="flipperDay2" />
+      <em>天:</em>
+      <Flipper ref="flipperHour1" />
+      <Flipper ref="flipperHour2" />
+      <em>时:</em>
+      <Flipper ref="flipperMinute1" />
+      <Flipper ref="flipperMinute2" />
+      <em>分:</em>
+      <Flipper ref="flipperSecond1" />
+      <Flipper ref="flipperSecond2" />
+      <em>秒</em>
+    </div>
+    <div style="float: right;" :style="{'margin-top':!show?'-99px':'0px'}">
+      <img src="./../assets/image/sw.svg" style="width: 120px;">
+    </div>
+    <div v-if="show">
+        <div class="sort">
+          <li><h2>第一名：<span>1</span></h2></li>
+          <li><h2>第二名：<span>2</span></h2></li>
+          <li><h2>第三名：<span>3</span></h2></li>
+        </div>
+    </div>
   </div>
+
 </template>
 
 <script>
@@ -23,13 +36,15 @@
       return {
         timer: null,
         flipObjs: [],
-        targetdate:'2021-04-30',
-        targetTime:'10*60*60*1000+45*60*1000',
+        targetdate:'2021-05-04',
+        targetTime:11*60*60*1000+10*60*1000,
+        show:false
       }
     },
     components: {
       Flipper
     },
+
     methods: {
       getStr:function(msec){
         let day = parseInt(msec / 1000 / 60 / 60 / 24)
@@ -54,6 +69,7 @@
         const msec = end - now
         let nowTimeStr = this.getStr(msec);
         if(msec<0){
+          this.show =true
           nowTimeStr = '00000000';
         }
         for (let i = 0; i < this.flipObjs.length; i++) {
@@ -70,8 +86,8 @@
             const end = Date.parse(new Date(this.targetdate))-(8*60*60*1000)+this.targetTime;
             // 当前时间戳
             // 相差的毫秒数
-            let nowTimeStr = this.getStr(end - Date.parse(new Date())-1000);
-            let nextTimeStr = this.getStr(end - Date.parse(new Date()));
+            let nowTimeStr = this.getStr(end - Date.parse(new Date()));
+            let nextTimeStr = this.getStr(end - Date.parse(new Date())-1000);
             for (let i = 0; i < this.flipObjs.length; i++) {
               if (nowTimeStr[i] === nextTimeStr[i]) {
                 continue
@@ -83,6 +99,7 @@
             }
             if(nextTimeStr==='00000000'){
               clearInterval(this.timer)
+              this.show =true
             }
           }, 1000)
         }
@@ -148,7 +165,7 @@
   }
 </script>
 
-<style>
+<style lang="scss">
   .FlipClock {
     text-align: center;
   }
@@ -161,5 +178,16 @@
     font-size: 66px;
     font-style: normal;
     vertical-align: top;
+  }
+  .sort{
+    display: flex;
+    justify-content:center;
+    li{
+      list-style-type:none;
+      padding: 5px;
+      span{
+        color: red;
+      }
+    }
   }
 </style>
