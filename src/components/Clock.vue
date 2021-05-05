@@ -29,6 +29,7 @@
 </template>
 
 <script>
+  import {getTime} from '@/api/codelist';
   import Flipper from './Flipper'
   export default {
     name: 'FlipClock',
@@ -36,16 +37,28 @@
       return {
         timer: null,
         flipObjs: [],
-        targetdate:'2021-05-04',
-        targetTime:11*60*60*1000+10*60*1000,
-        show:false
+        targetdate:'',
+        targetTime:'',
+        show:false,
+        timeStr:'',
       }
     },
     components: {
       Flipper
     },
-
     methods: {
+      getTime:function(){
+        getTime().then(response => {
+          this.timeStr = response.data;
+          this.targetdate = this.timeStr.split(" ")[0]
+          this.str = this.timeStr.split(" ")[1]
+          this.targetTime = this.str.split(":")[0]*60*60*1000+this.str.split(":")[1]*60*1000+this.str.split(":")[2]*1000
+          this.init()
+          this.run()
+        }).catch(error => {
+          console.log(error)
+        })
+      },
       getStr:function(msec){
         let day = parseInt(msec / 1000 / 60 / 60 / 24)
         let hr = parseInt(msec / 1000 / 60 / 60 % 24)
@@ -57,7 +70,7 @@
         min = min > 9 ? min : '0' + min
         sec = sec > 9 ? sec : '0' + sec
         // 控制台打印
-        console.log(`${day}天 ${hr}小时 ${min}分钟 ${sec}秒`)
+        // console.log(`${day}天 ${hr}小时 ${min}分钟 ${sec}秒`)
         return  day+hr+min+sec;
       },
       // 初始化数字
@@ -78,6 +91,7 @@
       },
       // 开始计时
       run() {
+        console.log(this.targetdate)
         const end1 = Date.parse(new Date(this.targetdate))-(8*60*60*1000)+this.targetTime;
         // 当前时间戳
         const now1 = Date.parse(new Date())
@@ -159,8 +173,9 @@
         this.$refs.flipperSecond1,
         this.$refs.flipperSecond2
       ]
-      this.init()
-      this.run()
+      this.getTime()
+      // this.init()
+      // this.run()
     }
   }
 </script>

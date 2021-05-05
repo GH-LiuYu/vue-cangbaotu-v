@@ -7,7 +7,7 @@
 <!--            :model="form" :rules="rules" ref="form" 必填-->
           <el-form-item label="手机号" class="phone" prop="phone">
 <!--              prop="phone" 必填-->
-            <el-input v-model="form.phone" placeholder="请输入手机号"></el-input>
+            <el-input v-model="form.phone" placeholder="请输入用户名"></el-input>
             <hr style="border: 0; background-color: #d6d6d6;; height: 1px; ">
           </el-form-item>
           <el-form-item label="验证码" prop="code">

@@ -12,10 +12,11 @@
                 <!-- Using the slider component -->
                 <slider ref="slider" :options="options" @slide='slide' @tap='onTap' @init='onInit'>
                     <!-- slideritem wrapped package with the components you need -->
-                    <slideritem v-for="(item,index) in slices" :key="item.id" :style="item.id===isactive?style1:style">
+<!--                    <slideritem v-for="(item,index) in slices" :key="item.id" :style="item.id===isactive?style1:style">-->
+                    <slideritem v-for="(item,index) in slices" :key="item.id" :style="checkbox.includes(item.id) ?style1:style">
                         <div>
                             <div>
-                                <div style="background-color: black;border-radius:25px;cursor:pointer;">投票<span style="float: right"  @click="click(item.id,selected)"> <vue-clap-button :size="53" colorActive="red"/></span></div>
+                                <div style="background-color: black;border-radius:25px;cursor:pointer;">投票<span style="float: right"  @click="click(item.id)"> <vue-clap-button :size="53" colorActive="red"/></span></div>
                                 <div>{{item.name}}</div>
                                 <div>{{item.code}}</div>
                             </div>
@@ -34,7 +35,7 @@
                         class="inline-input"
                         v-model="state"
                         :fetch-suggestions="querySearch"
-                        placeholder="投票：00001 gzmt 贵州茅台"
+                        placeholder="投票：00001/gzmt/贵州茅台"
                         :trigger-on-focus="false"
                         @select="handleSelect"
                 ></el-autocomplete>
@@ -45,7 +46,7 @@
 
 <script>
     import Clock from "../../components/Clock";
-    import {getlist} from '@/api/codelist';
+    import {getlist,choose} from '@/api/codelist';
     import { slider, slideritem } from 'vue-concise-slider'
     export default {
         name: 'index',
@@ -88,8 +89,8 @@
                     currentPage:2,
                 },
                 selected:false,
-                selectedId:0,
                 isactive:'',
+                checkbox:[],
             };
         },
         created() {
@@ -102,26 +103,37 @@
            this.getlist();
         },
         methods: {
-            click:function(id,selected){
-                if(this.selectedId!==id&&this.selectedId>0){//非同一个
-                    this.$message({
-                        showClose: true,
-                        message: '每用户只能投一票',
-                        type: 'error'
-                    });
-                }else {//同一个
-                    this.selected = !selected;
-                    if(this.selected){//选择
+            click:function(id){
+                let idx = this.checkbox.indexOf(id)
+                // 如果已经选中了，那就取消选中，如果没有，则选中
+                console.log(this.checkbox.length)
+                if (idx > -1) {
+                    this.checkbox.splice(idx, 1)
+                    console.log('取消')
+                    this.isactive=0;
+                } else {
+                    if(this.checkbox.length<3){
                         console.log('选择')
-                        this.selectedId = id;
-                        this.isactive=id;
-                    }else{//取消
-                        console.log('取消')
-                        this.selectedId = 0;
-                        this.isactive=0;
+                        choose({codeId:id,userId:1}).then(response => {
+                            if(response.code===200){
+                                this.checkbox.push(id)
+                                this.isactive=id;
+                                this.$message({
+                                    message: '已投票成功',
+                                    type: 'success'
+                                });
+                            }
+                        }).catch(error => {
+                            console.log(error)
+                        })
+                    }else{
+                        this.$message({
+                            message: '每用户最多只能投3票',
+                            type: 'warning'
+                        });
                     }
                 }
-            },
+             },
             handleKeyDown(e) {
                 //37 向后，40 向下，39 向前，38 向上
                 if (e.keyCode === 37||e.keyCode===40) {//后退
@@ -220,7 +232,16 @@
                         this.slices[i] = item
                     }
                 }
-                this.isactive = item.id;
+                // 如果已经选中了，那就取消选中，如果没有，则选中
+                if(this.checkbox.length<3){
+                    let idx = this.checkbox.indexOf(item.id)
+                    if (idx > -1) {
+
+                    }else{
+                        this.isactive = item.id;
+                        this.checkbox.push(item.id)
+                    }
+                }
                 this.$refs.slider.$emit('slideTo', 2)//跳转到
             },
         }
