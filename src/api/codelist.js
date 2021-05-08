@@ -6,3 +6,19 @@ export function getlist() {
     method: 'get',
   })
 }
+
+export function choose(data) {
+  return request({
+    url: '/code/choose',
+    method: 'post',
+    data
+  })
+}
+
+export function getTime() {
+  return request({
+    url: '/code/time',
+    method: 'get',
+  })
+}
+
