@@ -7,11 +7,11 @@
 // NProgress.configure({ showSpinner: false }) // NProgress Configuration
 // const whiteList = ['/login','/', '/auth-redirect'] // 白名单
 //
-// //前置路由守卫
+// //前置路由守卫--所有请求前都要经过这里
 // // router.beforeEach((to, from, next) => {
 // //     NProgress.start()
 // //       const hasToken = getToken()
-// //       if (hasToken) {
+// //       if (hasToken) {//如果已经登录
 // //           if (to.path === '/login') {
 // //               next({ path: '/' })
 // //               NProgress.done()
@@ -19,7 +19,7 @@
 // //               next()
 // //               NProgress.done()
 // //           }
-// //       }else {
+// //       }else {//如果没有登录
 // //           if (whiteList.indexOf(to.path) !== -1) { //如果在白名单，则往下继续，这就是跳出循环的关键
 // //               next()
 // //           } else {
